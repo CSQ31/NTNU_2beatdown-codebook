@@ -3,6 +3,8 @@
  * Date: 2025-09-19
  * Source: kactl but modfied
  * Description: Segment tree but you can split and join segments
+ * If it is not used as implicit treap, you should compare val 
+ * during split and merge
  * Time: $O(\log N)$
  * Status: stress-tested
  */
