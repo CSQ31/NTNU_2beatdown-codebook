@@ -1,40 +1,45 @@
 /**
- * Author: someone on Codeforces
- * Date: 2017-03-14
- * Source: folklore
- * Description: A short self-balancing tree. It acts as a
- *  sequential container with log-time splits/joins, and
- *  is easy to augment with additional data.
+ * Author: csq
+ * Date: 2025-09-19
+ * Source: kactl but modfied
+ * Description: Segment tree but you can split and join segments
  * Time: $O(\log N)$
  * Status: stress-tested
  */
 #pragma once
-
 struct Node {
 	Node *l = 0, *r = 0;
 	int val, y, c = 1;
 	Node(int val) : val(val), y(rand()) {}
-	void recalc();
+
+	//auxilary info
+    //int flip = 0,mn = 1e9,mnid = 0;
+	void pull();
+	void push();
+	void apply();
 };
 
 int cnt(Node* n) { return n ? n->c : 0; }
-void Node::recalc() { c = cnt(l) + cnt(r) + 1; }
-
-template<class F> void each(Node* n, F f) {
-	if (n) { each(n->l, f); f(n->val); each(n->r, f); }
+void Node::apply(){}
+void Node::push(){}
+void Node::pull(){
+    push();
+    c = cnt(l) + cnt(r) + 1;
+	//merge nodes here
 }
 
 pair<Node*, Node*> split(Node* n, int k) {
 	if (!n) return {};
+    n->push();
 	if (cnt(n->l) >= k) { // "n->val >= k" for lower_bound(k)
 		auto [L,R] = split(n->l, k);
 		n->l = R;
-		n->recalc();
+		n->pull();
 		return {L, n};
 	} else {
 		auto [L,R] = split(n->r,k - cnt(n->l) - 1); // and just "k"
 		n->r = L;
-		n->recalc();
+		n->pull();
 		return {n, R};
 	}
 }
@@ -42,12 +47,14 @@ pair<Node*, Node*> split(Node* n, int k) {
 Node* merge(Node* l, Node* r) {
 	if (!l) return r;
 	if (!r) return l;
+    l->push();
+    r->push();
 	if (l->y > r->y) {
 		l->r = merge(l->r, r);
-		return l->recalc(), l;
+		return l->pull(), l;
 	} else {
 		r->l = merge(l, r->l);
-		return r->recalc(), r;
+		return r->pull(), r;
 	}
 }
 
