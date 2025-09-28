@@ -1,4 +1,11 @@
-// line.h
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 struct line {
     pt v; T c; // use v=(-b, a), c to represent a line ax+by=c, 
     line(pt v, T c) : v(v), c(c) {}

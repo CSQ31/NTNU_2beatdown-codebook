@@ -1,5 +1,15 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 // Only work for T = double
+#pragma once
 
+#include "Point.h"
 pt bary(pt A, pt B, pt C, double a, double b, double c) {
     return (A*a + B*b + C*c) / (a + b + c);
 }

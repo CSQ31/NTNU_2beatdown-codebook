@@ -1,3 +1,11 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 // return the number of interestions
 int circleline(pt o, double r, line l, pair<pt,pt> &out) {
     double h2 = r*r - l.dist(o)*l.dist(o);

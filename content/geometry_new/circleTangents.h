@@ -1,3 +1,11 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 // r2 < 0 for inner tangent
 // r2 = 0 to find tangent line through point
 int tangents(pt o1, double r1, pt o2, double r2, vector<pair<pt,pt>> &out) {

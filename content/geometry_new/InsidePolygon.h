@@ -1,3 +1,11 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 // check if [PQ] crosses ray from A
 // definition: crossing: from y<0 to y>=0
 bool crossRay(pt a, pt p, pt q) {

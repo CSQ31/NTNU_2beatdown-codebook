@@ -1,3 +1,11 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 // min distance of segment ab and point p
 double segPoint(pt a, pt b, pt p) {
     if (a != b) {

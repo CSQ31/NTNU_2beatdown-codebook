@@ -1,3 +1,11 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 bool half(pt p, pt v) {
     // return 0 when arg(p) is in [v, v+pi) 
     return cross(v,p) < 0 || (cross(v,p) == 0 && dot(v,p) < 0);

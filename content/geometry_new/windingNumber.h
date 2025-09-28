@@ -1,3 +1,11 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 // Winding Number
 struct ang { // use acos2(d.y, d.x) + 2*PI*t to represent an angle
     pt d; ll t = 0; // direction and number of full turns

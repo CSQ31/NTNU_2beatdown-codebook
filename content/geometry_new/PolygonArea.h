@@ -1,3 +1,11 @@
+/**
+ * Author: Ding Fan
+ * Date: 2025-09-28
+ * License: CC0
+ * Source: Ding, ask him
+ * Description:
+ * Status: Stress tested
+ */
 // points of p should be given in counter-clockwise order
 double polyArea(vector<pt>& p) {
     T area = 0;
