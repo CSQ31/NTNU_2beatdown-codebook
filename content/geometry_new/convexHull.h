@@ -1,8 +1,8 @@
 /**
- * Author: Stjepan Glavina, chilli
- * Date: 2019-05-05
+ * Author: Unknown
+ * Date: 2025-10-27
  * License: Unlicense
- * Source: https://github.com/stjepang/snippets/blob/master/convex_hull.cpp
+ * Source: https://github.com/OmeletWithoutEgg/ckiseki/blob/master/codes/Geometry/ConvexHull.cpp
  * Description:
 \\\begin{minipage}{75mm}
 Returns a vector of the points of the convex hull in counter-clockwise order.
@@ -16,15 +16,15 @@ Points on the edge of the hull between two other points are not considered part 
  * Time: O(n \log n)
  * Status: stress-tested, tested with kattis:convexhull
 */
-v<pt> convexHull(v<pt> pts) {
-	if (sz(pts) <= 1) return pts;
-	sort(all(pts), [&](pt& a, pt& b) { return make_pair(a.x, a.y) < make_pair(b.x, b.y); } );
-	v<pt> h(2*sz(pts)+1);
-	int s = 0, t = 0;
-	for (int it = 2; it--; s = --t, reverse(all(pts)))
-		for (pt p : pts) {
-			while (t >= s + 2 && orient(h[t-2], h[t-1], p) < 0) t--;
-			h[t++] = p; 
-		}
-	return {h.begin(), h.begin() + t - (t == 2 && h[0] == h[1])};
+v<pt> convexHull(v<pt> ps) { // n==0 will RE
+  sort(all(ps), [&](pt& a, pt& b) { return make_pair(a.x, a.y) < make_pair(b.x, b.y); } );
+  if (ps[0] == ps.back()) return {ps[0]};
+  int t = 0, s = 1;
+  v<pt> h(sz(ps) + 1);
+  for (int _ = 2; _--; s = t--, reverse(all(ps)))
+    for (pt p : ps) {
+      while (t>s && orient(p, h[t-1], h[t-2]) >= 0) t--;
+      h[t++] = p;
+    }
+  return h.resize(t), h;
 }
