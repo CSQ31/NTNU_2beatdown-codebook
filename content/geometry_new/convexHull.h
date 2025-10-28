@@ -16,15 +16,15 @@ Points on the edge of the hull between two other points are not considered part 
  * Time: O(n \log n)
  * Status: stress-tested, tested with kattis:convexhull
 */
-v<pt> convexHull(v<pt> pts) {
-	if (sz(pts) <= 1) return pts;
-	sort(all(pts), [&](pt& a, pt& b) { return make_pair(a.x, a.y) < make_pair(b.x, b.y); } );
-	v<pt> h(2*sz(pts)+1);
-	int s = 0, t = 0;
-	for (int it = 2; it--; s = --t, reverse(all(pts)))
-		for (pt p : pts) {
-			while (t >= s + 2 && orient(h[t-2], h[t-1], p) < 0) t--;
+v<pt> convexHull(v<pt> ps) {
+    if ( sz(ps) <= 1 ) return ps;
+    sort(all(ps), [&](pt& a, pt& b) { return make_pair(a.x, a.y) < make_pair(b.x, b.y); } );
+	v<pt> h(2*sz(ps)+1); // sz(ps) + 1 if you don't need points on the boundary
+    int t = 0, s = 1;
+    for (int _ = 2; _--; s = t--, reverse(all(ps))) for (pt p : ps) {
+			while (t > s && orient(p, h[t-1], h[t-2]) > 0) t--;
+                // >= 0 if you don't need points on the boundary
 			h[t++] = p; 
 		}
-	return {h.begin(), h.begin() + t - (t == 2 && h[0] == h[1])};
+    return h.resize(t), h;
 }
