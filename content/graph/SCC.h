@@ -1,41 +1,39 @@
 /**
- * Author: Lukas Polacek
- * Date: 2009-10-28
+ * Author: Chew Shao Qian
+ * Date: 2025-11-12
  * License: CC0
- * Source: Czech graph algorithms book, by Demel. (Tarjan's algorithm)
- * Description: Finds strongly connected components in a
- * directed graph. If vertices $u, v$ belong to the same component,
- * we can reach $u$ from $v$ and vice versa.
- * Usage: scc(graph, [\&](vi\& v) { ... }) visits all components
- * in reverse topological order. comp[i] holds the component
- * index of a node (a component only has edges to components with
- * lower index). ncomps will contain the number of components.
+ * Source: csq's templates
+ * Description: comp[i] holds SCC index of i, note that SCC index
+ * is sorted in reverse topological order 
  * Time: O(E + V)
- * Status: Bruteforce-tested for N <= 5
+ * Status: Stress tested on library checker
  */
 #pragma once
 
-vi val, comp, z, cont;
-int Time, ncomps;
-template<class G, class F> int dfs(int j, G& g, F& f) {
-	int low = val[j] = ++Time, x; z.push_back(j);
-	for (auto e : g[j]) if (comp[e] < 0)
-		low = min(low, val[e] ?: dfs(e,g,f));
-
-	if (low == val[j]) {
-		do {
-			x = z.back(); z.pop_back();
-			comp[x] = ncomps;
-			cont.push_back(x);
-		} while (x != j);
-		f(cont); cont.clear();
-		ncomps++;
+struct SCC{
+    int n,timer = 0,ccnt = 0;
+    vector<int>low,tin,comp;
+    stack<int>stk;
+	SCC(int _n):n(_n),low(n,1e9),tin(n),comp(n){}
+	void dfs(int v, vv<int>&g){
+		stk.push(v);
+		low[v] = tin[v] = ++timer;
+		for(int x:g[v]){
+			if(!tin[x])dfs(x,g);
+			low[v] = min(low[v],low[x]);
+		}
+		if(tin[v] == low[v]){
+			while(true){
+				int j = stk.top();
+				stk.pop();
+				comp[j] = ccnt;
+				low[j] = 1e9;
+				if(j==v)break;
+			}
+            ccnt++;
+		}	
 	}
-	return val[j] = low;
-}
-template<class G, class F> void scc(G& g, F f) {
-	int n = sz(g);
-	val.assign(n, 0); comp.assign(n, -1);
-	Time = ncomps = 0;
-	rep(i,0,n) if (comp[i] < 0) dfs(i, g, f);
-}
+	void build(vv<int> g){
+		for(int i=0;i<n;i++)if(!tin[i])dfs(i,g);
+	}
+};
