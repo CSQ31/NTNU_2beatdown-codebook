@@ -1,36 +1,41 @@
 /**
- * Author: Simon Lindholm
+ * Author: Chew Shao Qian
  * Date: 2017-05-11
  * License: CC0
  * Source: folklore
- * Description: Computes sums a[i,j] for all i<I, j<J, and increases single elements a[i,j].
- *  Requires that the elements to be updated are known in advance (call fakeUpdate() before init()).
- * Time: $O(\log^2 N)$. (Use persistent segment trees for $O(\log N)$.)
+ * Description: Computes sum of a[1..i][l..r],
+ * All points must be known beforehand, call add on all then init()
  * Status: stress-tested
  */
 #pragma once
 
 #include "FenwickTree.h"
 
-struct FT2 {
-	vector<vi> ys; vector<FT> ft;
-	FT2(int limx) : ys(limx) {}
-	void fakeUpdate(int x, int y) {
-		for (; x < sz(ys); x |= x + 1) ys[x].push_back(y);
-	}
-	void init() {
-		for (vi& v : ys) sort(all(v)), ft.emplace_back(sz(v));
-	}
-	int ind(int x, int y) {
-		return (int)(lower_bound(all(ys[x]), y) - ys[x].begin()); }
-	void update(int x, int y, ll dif) {
-		for (; x < sz(ys); x |= x + 1)
-			ft[x].update(ind(x, y), dif);
-	}
-	ll query(int x, int y) {
-		ll sum = 0;
-		for (; x; x &= x - 1)
-			sum += ft[x-1].query(ind(x-1, y));
-		return sum;
-	}
+struct fenwick2{
+    int n;
+    vector<fenwick>f;
+    vv<int>pts;
+    fenwick2(int _n):n(_n),f(n+1),pts(n+1){}
+    void add(int x,int y){
+        for(;x<=n;x += x&(-x))pts[x].push_back(y);
+    }
+    void init(){
+        for(int i=1;i<=n;i++){
+            sort(all(pts[i]));
+            pts[i].resize(unique(all(pts[i])) - pts[i].begin());
+            f[i] = fenwick(sz(pts[i]));
+        }
+    }
+    void upd(int x,int y,int w){ //(x,y) must be added
+        for(;x<=n;x += x&(-x))
+            f[x].upd(lower_bound(all(pts[x]),y) - pts[x].begin()+1,w);
+    }
+    ll query(int x,int l,int r){
+        ll ans = 0;
+        for(;x>0;x -= x&(-x)){
+            ans += f[x].query(lower_bound(all(pts[x]),l) - pts[x].begin());
+            ans -= f[x].query(upper_bound(all(pts[x]),r) - pts[x].begin());
+        }
+        return ans;
+    }
 };
