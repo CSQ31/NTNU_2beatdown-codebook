@@ -9,17 +9,18 @@
  * Time: O(n)
  */
 #pragma once
-#include "Point.h"
+#include "point.h"
 
-typedef Point<ll> P;
-array<P, 2> hullDiameter(vector<P> S) {
+array<pt, 2> hullDiameter(v<pt> S) {
 	int n = sz(S), j = n < 2 ? 0 : 1;
-	pair<ll, array<P, 2>> res({0, {S[0], S[0]}});
-	rep(i,0,j)
-		for (;; j = (j + 1) % n) {
-			res = max(res, {(S[i] - S[j]).dist2(), {S[i], S[j]}});
-			if ((S[(j + 1) % n] - S[j]).cross(S[i + 1] - S[i]) >= 0)
-				break;
+	ll mx=0;
+	array<pt, 2> res = {S[0], S[0]};
+	rep(i,0,j) for (;; j = (j + 1) % n) {
+		if ( dot(S[i]-S[j],S[i]-S[j]) > mx ) {
+			mx = dot(S[i]-S[j],S[i]-S[j]);
+			res = {S[i], S[j]};
 		}
-	return res.second;
+		if ( cross(S[(j+1)%n]-S[j], S[i+1]-S[i]) >= 0 ) break;
+	}
+	return res;
 }

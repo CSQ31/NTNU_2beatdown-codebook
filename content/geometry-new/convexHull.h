@@ -5,8 +5,7 @@
  * Source: https://github.com/OmeletWithoutEgg/ckiseki/blob/master/codes/Geometry/ConvexHull.cpp
  * Description:
 \\\begin{minipage}{75mm}
-Returns a vector of the points of the convex hull in counter-clockwise order.
-Points on the edge of the hull between two other points are not considered part of the hull.
+Returns a vector of the points of the convex hull in counter-clockwise order. set bound=true to include points on the boundary.
 \end{minipage}
 \begin{minipage}{15mm}
 \vspace{-6mm}
@@ -16,14 +15,13 @@ Points on the edge of the hull between two other points are not considered part 
  * Time: O(n \log n)
  * Status: stress-tested, tested with kattis:convexhull
 */
-v<pt> convexHull(v<pt> ps) {
+v<pt> convexHull(v<pt> ps, bool bound) {
     if ( sz(ps) <= 1 ) return ps;
     sort(all(ps), [&](pt& a, pt& b) { return make_pair(a.x, a.y) < make_pair(b.x, b.y); } );
-	v<pt> h(2*sz(ps)+1); // sz(ps) + 1 if you don't need points on the boundary
+	v<pt> h(2*sz(ps)+1); // sz(ps) + 1 is enough if bound=false
     int t = 0, s = 1;
     for (int _ = 2; _--; s = t--, reverse(all(ps))) for (pt p : ps) {
-			while (t > s && orient(p, h[t-1], h[t-2]) > 0) t--;
-                // >= 0 if you don't need points on the boundary
+			while (t > s && orient(p, h[t-1], h[t-2]) >= bound) t--;
 			h[t++] = p; 
 		}
     return h.resize(t), h;
