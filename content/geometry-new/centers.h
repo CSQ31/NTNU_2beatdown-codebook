@@ -26,7 +26,7 @@ pt circumcenter(pt A, pt B, pt C) {
 }
 
 pt incenter(pt A, pt B, pt C) {
-    // intersection of internal angle bisectors
+    // intersection of three internal angle bisectors, always exist, center of incercle
     return bary(A, B, C, abs(B-C), abs(A-C), abs(A-B));
 }
 
