@@ -3,8 +3,8 @@
  * Date: 2026-02-14
  * License: CC0
  * Source: me
- * Description: Simulates bitset with 64 bit integers arrays
- * To shift the biset by x, first take bit[x%64] then shift the array by x/64
+ * Description: Simulates a bitset with an ull array, 
+ * to shift by $x$ take bit[$x \mod 64$] and shift the entire array by $x//64$
  * Status: tested
  */
 #pragma once

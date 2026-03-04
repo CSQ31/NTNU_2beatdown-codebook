@@ -3,8 +3,7 @@
  * Date: 2025-09-20
  * License: CC0
  * Source: various sources and benq
- * Description: supports inv(P),ln(P),exp(P) all in nlogn.
- * Not optimized, might have TLE issues
+ * Description: supports inv(P),ln(P),exp(P),div(P,Q) all in nlogn.
  * Time: O(N \log N), where $N = deg(P)$ 
  * Status: stress-tested
  */
@@ -21,12 +20,12 @@ poly rsz(const poly& p, int x) {
 }
 poly& operator+=(poly& p, const poly& q) {
 	p = rsz(p,max(sz(p),sz(q)));
-    rep(i, 0,sz(p)) {p[i] += q[i]; if(p[i] >= mod)p[i]-=mod;}
+    rep(i, 0,sz(q)) {p[i] += q[i]; if(p[i] >= mod)p[i]-=mod;}
 	return p; 
 }
 poly& operator-=(poly& p, const poly& q) {
 	p = rsz(p,max(sz(p),sz(q)));
-    rep(i, 0,sz(p)) {p[i] += mod-q[i];if(p[i] >= mod)p[i]-=mod;}
+    rep(i, 0,sz(q)) {p[i] += mod-q[i];if(p[i] >= mod)p[i]-=mod;}
 	return p; 
 }
 poly& operator*=(poly& p, const int &k) {
@@ -72,4 +71,21 @@ poly exp(poly A, int n) { assert(A[0] == 0);
 		B = B+rsz(conv(B,rsz(A,2*x)-integ(Q)),2*x); 
 	} 
 	return rsz(B,n);
+}
+poly div(poly a,poly b){ //rev(a)rev(b) = rev(d) mod x^(n-m+1)
+    assert(b != vl({0}) && "divide by zero poly\n");
+    int n = sz(a), m = sz(b);
+    if(m > n)return {};
+    reverse(all(a)), a = rsz(a,n-m+1);
+    reverse(all(b)), b = rsz(b,n-m+1);
+    poly d = rsz(a * inv(b,n-m+1),n-m+1);
+    reverse(all(d));
+    return d;
+}
+poly rem(poly a,poly b){
+    int n = sz(a), m = sz(b);
+    poly r = a - b*div(a,b);
+    while(!r.back())r.pop_back();
+    if(r.empty())r ={0};
+    return r;
 }
