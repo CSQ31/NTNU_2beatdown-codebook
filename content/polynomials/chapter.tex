@@ -8,6 +8,24 @@
   \kactlimport{PolyInterpolate.h}
   \kactlimport{BerlekampMassey.h}
   \kactlimport{LinearRecurrence.h}
+\section{Linear Reccurences}    
+Let $t_i = \sum_{j=1}^d t_{i-j}$ with $t_i = c_i$ for $i < d$. The gf $A(x)$ for $t$ is represented by $\frac{P(x)}{Q(x)}$ where 
+\begin{itemize}
+\item $Q(x) = 1 - \sum x^i s_i$
+\item $P(x) = Q(x)A(x)$
+\end{itemize}
+\section{Boston Mori}
+Finds $[x^k]\frac{P(x)}{Q(x)}$ in $O(d \log d \log k)$.
+\begin{tabbing}
+\quad \= \kill % This line sets the tab width
+\textbf{while} $k > 0$: \\
+\> $P(x) \gets (P(x)Q(-x))_{k\% 2}$ \\
+\> $Q(x) \gets (Q(x)Q(-x))_{0}$ \\
+\> $k \gets \lfloor k/2 \rfloor$ \\
+\textbf{end while} \\
+\textbf{output} $P(0) / Q(0)$
+\end{tabbing}
+$Q(x)_{0,1}$ denotes the polynomial with only odd or even index coeffs of $Q(x)$ 
 
 \section{Optimization}
   \kactlimport{GoldenSectionSearch.h}
